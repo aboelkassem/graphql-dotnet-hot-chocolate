@@ -1,4 +1,5 @@
-﻿using GraphQL.API.GraphQL;
+﻿using GraphQL.API.GraphQL.Mutations;
+using GraphQL.API.GraphQL.Queries;
 using GraphQL.API.Options;
 
 namespace GraphQL.API.StartupExtensions
@@ -8,7 +9,8 @@ namespace GraphQL.API.StartupExtensions
         public static IServiceCollection AddGraphQlAPI(this IServiceCollection services, ConfigurationManager configurationManager)
         {
             services.AddGraphQLServer()
-                .AddQueryType<GlobalQuery>();
+                .AddQueryType<GlobalQuery>()
+                .AddMutationType<GlobalMutation>();
             return services;
         }
 

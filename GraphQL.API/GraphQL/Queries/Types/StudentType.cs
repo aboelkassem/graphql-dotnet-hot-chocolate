@@ -1,4 +1,4 @@
-﻿namespace GraphQL.API.GraphQL.Types
+﻿namespace GraphQL.API.GraphQL.Queries.Types
 {
     public record StudentType
     (

@@ -1,7 +1,7 @@
-﻿using GraphQL.API.GraphQL.Enums;
+﻿using GraphQL.API.GraphQL.Common.Enums;
 using Microsoft.Identity.Client;
 
-namespace GraphQL.API.GraphQL.Types
+namespace GraphQL.API.GraphQL.Queries.Types
 {
     public record CourseType
     (
@@ -11,7 +11,7 @@ namespace GraphQL.API.GraphQL.Types
 
         [GraphQLNonNullType] // cannot return this value as null
         InstructorType Instructor
-    ) 
+    )
     {
         public IEnumerable<StudentType> Students { get; set; } = Enumerable.Empty<StudentType>();
 

@@ -1,6 +1,6 @@
-﻿using GraphQL.API.GraphQL.Types;
+﻿using GraphQL.API.GraphQL.Queries.Types;
 
-namespace GraphQL.API.GraphQL
+namespace GraphQL.API.GraphQL.Queries
 {
     public class GlobalQuery
     {
@@ -12,7 +12,7 @@ namespace GraphQL.API.GraphQL
                 (
                     Id: Guid.NewGuid(),
                     Name: "C#",
-                    Subject: Enums.SubjectEnum.Science,
+                    Subject: Common.Enums.SubjectEnum.Science,
                     Instructor: new
                     (
                         Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),
@@ -29,7 +29,7 @@ namespace GraphQL.API.GraphQL
                 (
                     Id: id,
                     Name: "C#",
-                    Subject: Enums.SubjectEnum.Science,
+                    Subject: Common.Enums.SubjectEnum.Science,
                     Instructor: new
                     (
                         Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),
