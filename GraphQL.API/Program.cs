@@ -25,5 +25,6 @@ var dbContext = sp.GetRequiredService<ApplicationDbContext>();
 dbContext.Seed();
 
 app.UseRouting();
+app.UseWebSockets();
 app.AddGraphQl(app.Configuration);
 app.Run();
