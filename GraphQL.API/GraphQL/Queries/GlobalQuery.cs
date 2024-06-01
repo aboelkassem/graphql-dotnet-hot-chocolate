@@ -12,7 +12,7 @@ namespace GraphQL.API.GraphQL.Queries
                 (
                     Id: Guid.NewGuid(),
                     Name: "C#",
-                    Subject: Common.Enums.SubjectEnum.Science,
+                    Subject: Enums.SubjectEnum.Science,
                     Instructor: new
                     (
                         Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),
@@ -29,7 +29,7 @@ namespace GraphQL.API.GraphQL.Queries
                 (
                     Id: id,
                     Name: "C#",
-                    Subject: Common.Enums.SubjectEnum.Science,
+                    Subject: Enums.SubjectEnum.Science,
                     Instructor: new
                     (
                         Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),

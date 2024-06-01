@@ -1,4 +1,4 @@
-﻿using GraphQL.API.GraphQL.Common.Enums;
+﻿using GraphQL.API.Enums;
 
 namespace GraphQL.API.GraphQL.Mutations.Results
 {
