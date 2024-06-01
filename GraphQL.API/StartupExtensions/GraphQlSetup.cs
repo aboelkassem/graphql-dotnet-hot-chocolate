@@ -1,5 +1,6 @@
 ﻿using GraphQL.API.GraphQL.Mutations;
 using GraphQL.API.GraphQL.Queries;
+using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Options;
 
 namespace GraphQL.API.StartupExtensions
@@ -10,7 +11,10 @@ namespace GraphQL.API.StartupExtensions
         {
             services.AddGraphQLServer()
                 .AddQueryType<GlobalQuery>()
-                .AddMutationType<GlobalMutation>();
+                .AddMutationType<GlobalMutation>()
+                .AddSubscriptionType<GlobalSubscription>()
+                .AddInMemorySubscriptions(); // you can use Redis for distributed environments https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/subscriptions#redis-provider https://chillicream.com/docs/hotchocolate/v13/distributed-schema/schema-federations
+
             return services;
         }
 
