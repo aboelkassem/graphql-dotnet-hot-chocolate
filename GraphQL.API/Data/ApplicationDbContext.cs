@@ -8,8 +8,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
-
-    public DbSet<ProductEntity> Products { get; set; }
-
-    public DbSet<ProductReviewEntity> ProductReviews { get; set; }
+    public DbSet<CourseEntity> Courses { get; set; }
+    public DbSet<InstructorEntity> Instructors { get; set; }
+    public DbSet<StudentEntity> Students { get; set; }
 }
