@@ -23,5 +23,7 @@ var app = builder.Build();
 var sp = builder.Services.BuildServiceProvider();
 var dbContext = sp.GetRequiredService<ApplicationDbContext>();
 dbContext.Seed();
+
+app.UseRouting();
 app.AddGraphQl(app.Configuration);
 app.Run();
