@@ -1,5 +1,4 @@
 ﻿using GraphQL.API.Enums;
-using Microsoft.Identity.Client;
 
 namespace GraphQL.API.GraphQL.Queries.Types
 {
