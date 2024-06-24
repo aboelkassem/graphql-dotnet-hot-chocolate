@@ -13,12 +13,7 @@ namespace GraphQL.API.GraphQL.Queries
                 Id: c.Id,
                 Name: c.Name,
                 Subject: c.Subject,
-                Instructor: new(
-                    Person: new(
-                        Id: c.Instructor.Id, 
-                        FirstName: c.Instructor.FirstName, 
-                        LastName: c.Instructor.LastName), 
-                    c.Instructor.Salary)
+                InstructorId: c.InstructorId
             ));
         }
 
@@ -33,12 +28,7 @@ namespace GraphQL.API.GraphQL.Queries
                 Id: coursesDTO.Id,
                 Name: coursesDTO.Name,
                 Subject: coursesDTO.Subject,
-                Instructor: new(
-                    Person: new(
-                        Id: coursesDTO.Instructor.Id,
-                        FirstName: coursesDTO.Instructor.FirstName,
-                        LastName: coursesDTO.Instructor.LastName),
-                    coursesDTO.Instructor.Salary)
+                InstructorId: coursesDTO.InstructorId
             );
         }
 

@@ -1,4 +1,5 @@
 using GraphQL.API.Data;
+using GraphQL.API.GraphQL.DataLoaders;
 using GraphQL.API.Repositories;
 using GraphQL.API.StartupExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("School")));
 builder.Services
         .AddScoped<ICoursesRepository, CoursesRepository>()
-        .AddScoped<IInstructorsRepository, InstructorsRepository>();
+        .AddScoped<IInstructorsRepository, InstructorsRepository>()
+        .AddScoped<InstructorDataLoader>();
 
 builder.Services.AddGraphQlAPI(builder.Configuration);
 
