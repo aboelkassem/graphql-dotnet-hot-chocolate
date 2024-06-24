@@ -13,8 +13,9 @@ namespace GraphQL.API.Repositories
             _contextFactory = contextFactory;
         }
 
-        public async Task<IEnumerable<CourseEntity>> GetAll()
+        public async Task<IEnumerable<CourseEntity>> GetAllAsync()
         {
+            // using DbContextFactory will solve the EF concurrency problems when our GraphQL resolvers run in parallel.
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
                 return await context.Courses
@@ -24,7 +25,7 @@ namespace GraphQL.API.Repositories
             }
         }
 
-        public async Task<CourseEntity> GetById(Guid courseId)
+        public async Task<CourseEntity> GetByIdAsync(Guid courseId)
         {
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
@@ -35,7 +36,7 @@ namespace GraphQL.API.Repositories
             }
         }
 
-        public async Task<CourseEntity> Create(CourseEntity course)
+        public async Task<CourseEntity> CreateAsync(CourseEntity course)
         {
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
@@ -46,7 +47,7 @@ namespace GraphQL.API.Repositories
             }
         }
 
-        public async Task<CourseEntity> Update(CourseEntity course)
+        public async Task<CourseEntity> UpdateAsync(CourseEntity course)
         {
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
@@ -57,7 +58,7 @@ namespace GraphQL.API.Repositories
             }
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {

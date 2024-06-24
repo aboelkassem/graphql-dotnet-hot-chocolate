@@ -7,5 +7,5 @@ public class InstructorEntity
     public string LastName { get; set; } = string.Empty;
     public double Salary { get; set; }
 
-    public IEnumerable<CourseEntity> Courses { get; set; } = [];
+    public IEnumerable<CourseEntity> Courses { get; set; }
 }
