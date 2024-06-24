@@ -19,8 +19,6 @@ namespace GraphQL.API.Repositories
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
                 return await context.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
                     .ToListAsync();
             }
         }
@@ -30,8 +28,6 @@ namespace GraphQL.API.Repositories
             using (ApplicationDbContext context = _contextFactory.CreateDbContext())
             {
                 return await context.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
                     .FirstOrDefaultAsync(c => c.Id == courseId);
             }
         }
