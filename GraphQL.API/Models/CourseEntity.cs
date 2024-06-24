@@ -11,5 +11,5 @@ public class CourseEntity
     public Guid InstructorId { get; set; }
     public InstructorEntity Instructor { get; set; } = default!;
 
-    public IEnumerable<StudentEntity> Students { get; set; } = [];
+    public IEnumerable<StudentEntity> Students { get; set; }
 }

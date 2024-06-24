@@ -1,19 +1,17 @@
-﻿using GraphQL.API.Data;
-using GraphQL.API.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using GraphQL.API.Models;
 
 namespace GraphQL.API.Repositories
 {
     public interface ICoursesRepository
     {
-        Task<IEnumerable<CourseEntity>> GetAll();
+        Task<IEnumerable<CourseEntity>> GetAllAsync();
 
-        Task<CourseEntity> GetById(Guid courseId);
+        Task<CourseEntity> GetByIdAsync(Guid courseId);
 
-        Task<CourseEntity> Create(CourseEntity course);
+        Task<CourseEntity> CreateAsync(CourseEntity course);
 
-        Task<CourseEntity> Update(CourseEntity course);
+        Task<CourseEntity> UpdateAsync(CourseEntity course);
 
-        Task<bool> Delete(Guid id);
+        Task<bool> DeleteAsync(Guid id);
     }
 }

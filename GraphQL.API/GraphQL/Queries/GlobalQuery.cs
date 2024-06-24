@@ -1,41 +1,45 @@
 ﻿using GraphQL.API.GraphQL.Queries.Types;
+using GraphQL.API.Repositories;
 
 namespace GraphQL.API.GraphQL.Queries
 {
-    public class GlobalQuery
+    public class GlobalQuery(ICoursesRepository _coursesRepo)
     {
-        public IEnumerable<CourseType> GetCourses()
+        public async Task<IEnumerable<CourseType>> GetCoursesAsync()
         {
-            return new List<CourseType>()
-            {
-                new CourseType
-                (
-                    Id: Guid.NewGuid(),
-                    Name: "C#",
-                    Subject: Enums.SubjectEnum.Science,
-                    Instructor: new
-                    (
-                        Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),
-                        Salary: 1500
-                    )
-                )
-            };
+            var coursesDTOs = await _coursesRepo.GetAllAsync();
+            return coursesDTOs.Select(c => new CourseType
+            (
+                Id: c.Id,
+                Name: c.Name,
+                Subject: c.Subject,
+                Instructor: new(
+                    Person: new(
+                        Id: c.Instructor.Id, 
+                        FirstName: c.Instructor.FirstName, 
+                        LastName: c.Instructor.LastName), 
+                    c.Instructor.Salary)
+            ));
         }
 
         public async Task<CourseType> GetCourseByIdAsync(Guid id)
         {
-            await Task.Delay(100);
+            var coursesDTO = await _coursesRepo.GetByIdAsync(id);
+            if (coursesDTO is null)
+                throw new GraphQLException(new Error("Course not found", "COURSE_NOT_FOUND"));
+
             return new CourseType
-                (
-                    Id: id,
-                    Name: "C#",
-                    Subject: Enums.SubjectEnum.Science,
-                    Instructor: new
-                    (
-                        Person: new(Id: Guid.NewGuid(), FirstName: "John", LastName: "Doe"),
-                        Salary: 1500
-                    )
-                );
+            (
+                Id: coursesDTO.Id,
+                Name: coursesDTO.Name,
+                Subject: coursesDTO.Subject,
+                Instructor: new(
+                    Person: new(
+                        Id: coursesDTO.Instructor.Id,
+                        FirstName: coursesDTO.Instructor.FirstName,
+                        LastName: coursesDTO.Instructor.LastName),
+                    coursesDTO.Instructor.Salary)
+            );
         }
 
         // will show warning in playground
