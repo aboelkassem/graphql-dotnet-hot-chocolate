@@ -11,7 +11,9 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     //options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
 });
 
-builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("School")));
+builder.Services.AddDbContextFactory<ApplicationDbContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("School")),
+    lifetime: ServiceLifetime.Scoped);
 builder.Services
         .AddScoped<ICoursesRepository, CoursesRepository>()
         .AddScoped<IInstructorsRepository, InstructorsRepository>()

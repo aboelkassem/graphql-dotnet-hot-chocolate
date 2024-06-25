@@ -4,14 +4,13 @@ using GraphQL.API.Models;
 
 namespace GraphQL.API.GraphQL.Queries.Types
 {
-    public record CourseType
-    (
-        Guid Id,
-        string Name,
-        SubjectEnum Subject,
-        Guid InstructorId
-    )
+    public class CourseType
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public SubjectEnum Subject { get; set; }
+        public Guid InstructorId { get; set; }
+
         [GraphQLNonNullType] // cannot return this value as null
         //
         public async Task<InstructorType> Instructor([Service] InstructorDataLoader instructorDataLoader)
