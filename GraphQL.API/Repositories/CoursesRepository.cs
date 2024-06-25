@@ -13,15 +13,15 @@ namespace GraphQL.API.Repositories
             _contextFactory = contextFactory;
         }
 
-        public async Task<IEnumerable<CourseEntity>> GetAllAsync()
-        {
-            // using DbContextFactory will solve the EF concurrency problems when our GraphQL resolvers run in parallel.
-            using (ApplicationDbContext context = _contextFactory.CreateDbContext())
-            {
-                return await context.Courses
-                    .ToListAsync();
-            }
-        }
+        //public async Task<IEnumerable<CourseEntity>> GetAllAsync()
+        //{
+        //    // using DbContextFactory will solve the EF concurrency problems when our GraphQL resolvers run in parallel.
+        //    using (ApplicationDbContext context = _contextFactory.CreateDbContext())
+        //    {
+        //        return await context.Courses
+        //            .ToListAsync();
+        //    }
+        //}
 
         public async Task<CourseEntity> GetByIdAsync(Guid courseId)
         {

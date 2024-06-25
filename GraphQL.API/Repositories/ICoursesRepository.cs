@@ -4,7 +4,7 @@ namespace GraphQL.API.Repositories
 {
     public interface ICoursesRepository
     {
-        Task<IEnumerable<CourseEntity>> GetAllAsync();
+        //Task<IEnumerable<CourseEntity>> GetAllAsync();
 
         Task<CourseEntity> GetByIdAsync(Guid courseId);
 
