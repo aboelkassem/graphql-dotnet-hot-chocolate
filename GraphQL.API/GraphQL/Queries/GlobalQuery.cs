@@ -1,4 +1,5 @@
 ﻿using GraphQL.API.Data;
+using GraphQL.API.GraphQL.Filters;
 using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.Repositories;
 
@@ -6,8 +7,11 @@ namespace GraphQL.API.GraphQL.Queries
 {
     public class GlobalQuery(ICoursesRepository _coursesRepo)
     {
+        // the ordering is important
+
         [UseDbContext(typeof(ApplicationDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseFiltering]
         public IQueryable<CourseType> GetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
         {
             return context.Courses.Select(c => new CourseType
@@ -21,6 +25,7 @@ namespace GraphQL.API.GraphQL.Queries
 
         [UseDbContext(typeof(ApplicationDbContext))]
         [UseOffsetPaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseFiltering(Type = typeof(CourseFilterType))]
         public IQueryable<CourseType> GetOffsetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
         {
             return context.Courses.Select(c => new CourseType
