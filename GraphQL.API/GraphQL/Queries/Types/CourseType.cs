@@ -9,7 +9,10 @@ namespace GraphQL.API.GraphQL.Queries.Types
         public Guid Id { get; set; }
         public string Name { get; set; }
         public SubjectEnum Subject { get; set; }
-        public Guid InstructorId { get; set; }
+
+        // always project forign keys
+        [IsProjected(true)]
+        public Guid InstructorId { get; set; } // no need to query it for being assigned
 
         [GraphQLNonNullType] // cannot return this value as null
         //
