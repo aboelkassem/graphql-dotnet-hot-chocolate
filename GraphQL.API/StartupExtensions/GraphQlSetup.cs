@@ -14,6 +14,7 @@ namespace GraphQL.API.StartupExtensions
                 .AddMutationType<GlobalMutation>()
                 .AddSubscriptionType<GlobalSubscription>()
                 .AddFiltering()
+                .AddSorting()
                 .AddInMemorySubscriptions(); // you can use Redis for distributed environments https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/subscriptions#redis-provider https://chillicream.com/docs/hotchocolate/v13/distributed-schema/schema-federations
 
             return services;
