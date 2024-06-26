@@ -12,6 +12,7 @@ namespace GraphQL.API.GraphQL.Queries
 
         [UseDbContext(typeof(ApplicationDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
         [UseFiltering(Type = typeof(CourseFilterType))]
         [UseSorting(Type = typeof(CourseSortType))]
         public IQueryable<CourseType> GetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
@@ -27,6 +28,7 @@ namespace GraphQL.API.GraphQL.Queries
 
         [UseDbContext(typeof(ApplicationDbContext))]
         [UseOffsetPaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
         [UseFiltering(Type = typeof(CourseFilterType))]
         [UseSorting(Type = typeof(CourseSortType))]
         public IQueryable<CourseType> GetOffsetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
