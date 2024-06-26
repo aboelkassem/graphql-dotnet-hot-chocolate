@@ -1,6 +1,7 @@
 ﻿using GraphQL.API.Data;
 using GraphQL.API.GraphQL.Filters;
 using GraphQL.API.GraphQL.Queries.Types;
+using GraphQL.API.GraphQL.Sorter;
 using GraphQL.API.Repositories;
 
 namespace GraphQL.API.GraphQL.Queries
@@ -11,7 +12,8 @@ namespace GraphQL.API.GraphQL.Queries
 
         [UseDbContext(typeof(ApplicationDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseFiltering]
+        [UseFiltering(Type = typeof(CourseFilterType))]
+        [UseSorting(Type = typeof(CourseSortType))]
         public IQueryable<CourseType> GetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
         {
             return context.Courses.Select(c => new CourseType
@@ -26,6 +28,7 @@ namespace GraphQL.API.GraphQL.Queries
         [UseDbContext(typeof(ApplicationDbContext))]
         [UseOffsetPaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseFiltering(Type = typeof(CourseFilterType))]
+        [UseSorting(Type = typeof(CourseSortType))]
         public IQueryable<CourseType> GetOffsetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
         {
             return context.Courses.Select(c => new CourseType
