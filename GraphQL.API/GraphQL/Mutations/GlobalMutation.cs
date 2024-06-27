@@ -16,7 +16,7 @@ namespace GraphQL.API.GraphQL.Mutations
         // Inject services directly to method
         [HotChocolate.Authorization.Authorize]
         public async Task<CourseResult> CreateCourseAsync(
-            [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput, 
+            [UseFluentValidation] CourseTypeInput courseInput, 
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
@@ -52,7 +52,7 @@ namespace GraphQL.API.GraphQL.Mutations
         [HotChocolate.Authorization.Authorize]
         public async Task<CourseResult> UpdateCourseAsync(
             Guid courseId,
-            [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput, 
+            [UseFluentValidation] CourseTypeInput courseInput, 
             [Service] ITopicEventSender topicEventSender)
         {
             if (courseId == Guid.Empty)
