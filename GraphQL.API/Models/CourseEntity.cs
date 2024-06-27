@@ -8,6 +8,8 @@ public class CourseEntity
     public string Name { get; set; } = string.Empty;
     public SubjectEnum Subject { get; set; }
 
+    public string CreatorId { get; set; }
+
     public Guid InstructorId { get; set; }
     public InstructorEntity Instructor { get; set; } = default!;
 
