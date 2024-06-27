@@ -3,11 +3,10 @@ using FirebaseAdminAuthentication.DependencyInjection.Models;
 using GraphQL.API.GraphQL.Mutations.Inputs;
 using GraphQL.API.GraphQL.Mutations.Results;
 using GraphQL.API.GraphQL.Subscriptions;
+using GraphQL.API.Middlewares.UseUser;
 using GraphQL.API.Models;
 using GraphQL.API.Repositories;
-using GraphQL.API.Validators;
 using HotChocolate.Subscriptions;
-using System.Security.Claims;
 
 namespace GraphQL.API.GraphQL.Mutations
 {
@@ -15,22 +14,18 @@ namespace GraphQL.API.GraphQL.Mutations
     {
         // Inject services directly to method
         [HotChocolate.Authorization.Authorize]
+        [UseUser]
         public async Task<CourseResult> CreateCourseAsync(
             [UseFluentValidation] CourseTypeInput courseInput, 
             [Service] ITopicEventSender topicEventSender,
-            ClaimsPrincipal claimsPrincipal)
+            [User] User user)
         {
-            var userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
-            if (string.IsNullOrEmpty(userId))
-                throw new GraphQLException(new Error("UserId Not found in user claimns", "USERID_NOT_FOUND"));
-            var email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL);
-
             var courseDTO = new CourseEntity
             {
                 Name = courseInput.Name,
                 Subject = courseInput.Subject,
                 InstructorId = courseInput.InstructorId,
-                CreatorId = userId
+                CreatorId = user.Id
             };
 
             courseDTO = await _coursesRepo.CreateAsync(courseDTO);
