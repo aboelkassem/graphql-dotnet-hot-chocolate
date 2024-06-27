@@ -4,7 +4,7 @@ using GraphQL.API.Models;
 
 namespace GraphQL.API.GraphQL.Queries.Types
 {
-    public class CourseType
+    public class CourseType : ISearchResultType
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -20,14 +20,30 @@ namespace GraphQL.API.GraphQL.Queries.Types
         {
             InstructorEntity instructorDTO = await instructorDataLoader.LoadAsync(InstructorId, CancellationToken.None);
 
-            return new InstructorType(
-                    Person: new(
-                        Id: instructorDTO.Id,
-                        FirstName: instructorDTO.FirstName,
-                        LastName: instructorDTO.LastName),
-                    instructorDTO.Salary);
+            return new InstructorType
+            {
+                Person = new()
+                {
+                    Id = instructorDTO.Id,
+                    FirstName = instructorDTO.FirstName,
+                    LastName = instructorDTO.LastName
+                },
+                Salary = instructorDTO.Salary
+            };
         }
         public IEnumerable<StudentType> Students { get; set; } = Enumerable.Empty<StudentType>();
+
+
+        [IsProjected(true)]
+        public string? CreatorId { get; set; }
+
+        public async Task<UserType?> Creator([Service] UserDataLoader userDataLoader)
+        {
+            if (string.IsNullOrEmpty(CreatorId))
+                return null;
+
+            return await userDataLoader.LoadAsync(CreatorId, CancellationToken.None);
+        }
 
         public string Description()
         {

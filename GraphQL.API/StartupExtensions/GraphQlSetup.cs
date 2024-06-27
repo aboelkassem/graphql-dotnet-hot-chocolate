@@ -1,8 +1,10 @@
 ﻿using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
 using Google.Apis.Auth.OAuth2;
 using GraphQL.API.GraphQL.Mutations;
 using GraphQL.API.GraphQL.Queries;
+using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Options;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,9 @@ namespace GraphQL.API.StartupExtensions
                 .AddQueryType<GlobalQuery>()
                 .AddMutationType<GlobalMutation>()
                 .AddSubscriptionType<GlobalSubscription>()
+                .AddType<CourseType>()
+                .AddType<InstructorType>()
+                .AddTypeExtension<CourseQuery>()
                 .AddFiltering()
                 .AddSorting()
                 .AddProjections()
@@ -25,6 +30,7 @@ namespace GraphQL.API.StartupExtensions
 
 
             ConfigureAuthorization(services, configuration);
+            ConfigureAthorization(services, configuration);
 
             return services;
         }
@@ -35,7 +41,16 @@ namespace GraphQL.API.StartupExtensions
 
             services.AddSingleton(FirebaseApp.Create());
             services.AddFirebaseAuthentication();
+        }
 
+        public static void ConfigureAthorization(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            services.AddAuthorization(o =>
+            {
+                // if has claim with value admin@gmail.com then statisfy this policy,
+                o.AddPolicy("IsAdminPolicy", p =>
+                    p.RequireClaim(FirebaseUserClaimType.EMAIL, allowedValues: "admin@gmail.com"));
+            });
         }
 
         public static IApplicationBuilder AddGraphQl(this IApplicationBuilder app, IConfiguration configuration)

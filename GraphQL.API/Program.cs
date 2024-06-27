@@ -18,7 +18,8 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(
 builder.Services
         .AddScoped<ICoursesRepository, CoursesRepository>()
         .AddScoped<IInstructorsRepository, InstructorsRepository>()
-        .AddScoped<InstructorDataLoader>();
+        .AddScoped<InstructorDataLoader>()
+        .AddScoped<UserDataLoader>();
 
 builder.Services.AddGraphQlAPI(builder.Configuration);
 

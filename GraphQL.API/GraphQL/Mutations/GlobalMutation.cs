@@ -19,6 +19,8 @@ namespace GraphQL.API.GraphQL.Mutations
             ClaimsPrincipal claimsPrincipal)
         {
             var userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+            if (string.IsNullOrEmpty(userId))
+                throw new GraphQLException(new Error("UserId Not found in user claimns", "USERID_NOT_FOUND"));
             var email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL);
 
             var courseDTO = new CourseEntity
@@ -26,6 +28,7 @@ namespace GraphQL.API.GraphQL.Mutations
                 Name = courseInput.Name,
                 Subject = courseInput.Subject,
                 InstructorId = courseInput.InstructorId,
+                CreatorId = userId
             };
 
             courseDTO = await _coursesRepo.CreateAsync(courseDTO);
@@ -75,6 +78,7 @@ namespace GraphQL.API.GraphQL.Mutations
             return course;
         }
 
+        [HotChocolate.Authorization.Authorize(Policy = "IsAdminPolicy")]
         public async Task<bool> DeleteCourseAsync(Guid id)
         {
             try
