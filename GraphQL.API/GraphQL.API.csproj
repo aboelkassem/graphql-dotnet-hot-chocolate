@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="firebase-config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AppAny.HotChocolate.FluentValidation" Version="0.11.1" />
     <PackageReference Include="FirebaseAdminAuthentication.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="FluentValidation" Version="11.9.1" />
@@ -15,8 +19,16 @@
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.5" />
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.5" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.9.5" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageReference Include="FirebaseAdminAuthentication.DependencyInjection" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="firebase-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

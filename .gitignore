@@ -1,6 +1,7 @@
 *.class
 .vs/
 net7.0/
+firebase-config.json
 
 
 # Mono auto generated files
