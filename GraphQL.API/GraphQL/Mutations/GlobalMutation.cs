@@ -1,9 +1,11 @@
-﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+﻿using AppAny.HotChocolate.FluentValidation;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
 using GraphQL.API.GraphQL.Mutations.Inputs;
 using GraphQL.API.GraphQL.Mutations.Results;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Models;
 using GraphQL.API.Repositories;
+using GraphQL.API.Validators;
 using HotChocolate.Subscriptions;
 using System.Security.Claims;
 
@@ -14,7 +16,7 @@ namespace GraphQL.API.GraphQL.Mutations
         // Inject services directly to method
         [HotChocolate.Authorization.Authorize]
         public async Task<CourseResult> CreateCourseAsync(
-            CourseTypeInput courseInput, 
+            [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput, 
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
@@ -48,7 +50,10 @@ namespace GraphQL.API.GraphQL.Mutations
         }
 
         [HotChocolate.Authorization.Authorize]
-        public async Task<CourseResult> UpdateCourseAsync(Guid courseId, CourseTypeInput courseInput, [Service] ITopicEventSender topicEventSender)
+        public async Task<CourseResult> UpdateCourseAsync(
+            Guid courseId,
+            [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput, 
+            [Service] ITopicEventSender topicEventSender)
         {
             if (courseId == Guid.Empty)
                 throw new GraphQLException(new Error("Course not found", "COURSE_NOT_FOUND"));

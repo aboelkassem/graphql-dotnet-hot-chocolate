@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using GraphQL.API.Data;
 using GraphQL.API.GraphQL.DataLoaders;
 using GraphQL.API.Repositories;
@@ -14,6 +15,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddDbContextFactory<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("School")),
     lifetime: ServiceLifetime.Scoped);
+
 
 builder.Services
         .AddScoped<ICoursesRepository, CoursesRepository>()
