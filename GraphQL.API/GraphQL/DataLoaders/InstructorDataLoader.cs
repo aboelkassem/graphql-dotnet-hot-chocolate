@@ -9,9 +9,8 @@ public class InstructorDataLoader : BatchDataLoader<Guid, InstructorEntity>
 
     public InstructorDataLoader(
         IInstructorsRepository instructorsRepository,
-        IBatchScheduler batchScheduler,
-        DataLoaderOptions options = null)
-        : base(batchScheduler, options)
+        IBatchScheduler batchScheduler)
+        : base(batchScheduler)
     {
         _instructorsRepository = instructorsRepository;
     }

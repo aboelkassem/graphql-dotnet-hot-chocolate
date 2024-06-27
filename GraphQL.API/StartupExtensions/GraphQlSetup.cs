@@ -2,14 +2,14 @@
 using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using FirebaseAdminAuthentication.DependencyInjection.Models;
-using Google.Apis.Auth.OAuth2;
+using FluentValidation;
 using GraphQL.API.GraphQL.Mutations;
+using GraphQL.API.GraphQL.Mutations.Inputs;
 using GraphQL.API.GraphQL.Queries;
 using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Options;
 using GraphQL.API.Validators;
-using Microsoft.Extensions.Configuration;
 
 namespace GraphQL.API.StartupExtensions
 {
@@ -17,7 +17,7 @@ namespace GraphQL.API.StartupExtensions
     {
         public static IServiceCollection AddGraphQlAPI(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddTransient<CourseTypeInputValidator>();
+            services.AddTransient<IValidator<CourseTypeInput>, CourseTypeInputValidator>();
 
             services.AddGraphQLServer()
                 .AddQueryType<GlobalQuery>()
