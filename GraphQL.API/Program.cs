@@ -14,6 +14,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddDbContextFactory<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("School")),
     lifetime: ServiceLifetime.Scoped);
+
 builder.Services
         .AddScoped<ICoursesRepository, CoursesRepository>()
         .AddScoped<IInstructorsRepository, InstructorsRepository>()
@@ -32,6 +33,9 @@ using (ApplicationDbContext context = dbContext.CreateDbContext())
 }
 
 app.UseRouting();
+
+app.UseAuthentication();
+
 app.UseWebSockets();
 app.AddGraphQl(app.Configuration);
 app.Run();

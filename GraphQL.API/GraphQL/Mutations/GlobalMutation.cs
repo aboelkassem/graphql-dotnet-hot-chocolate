@@ -1,17 +1,26 @@
-﻿using GraphQL.API.GraphQL.Mutations.Inputs;
+﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+using GraphQL.API.GraphQL.Mutations.Inputs;
 using GraphQL.API.GraphQL.Mutations.Results;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Models;
 using GraphQL.API.Repositories;
 using HotChocolate.Subscriptions;
+using System.Security.Claims;
 
 namespace GraphQL.API.GraphQL.Mutations
 {
     public class GlobalMutation(ICoursesRepository _coursesRepo)
     {
         // Inject services directly to method
-        public async Task<CourseResult> CreateCourseAsync(CourseTypeInput courseInput, [Service] ITopicEventSender topicEventSender)
+        [HotChocolate.Authorization.Authorize]
+        public async Task<CourseResult> CreateCourseAsync(
+            CourseTypeInput courseInput, 
+            [Service] ITopicEventSender topicEventSender,
+            ClaimsPrincipal claimsPrincipal)
         {
+            var userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+            var email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL);
+
             var courseDTO = new CourseEntity
             {
                 Name = courseInput.Name,
@@ -35,6 +44,7 @@ namespace GraphQL.API.GraphQL.Mutations
             return course;
         }
 
+        [HotChocolate.Authorization.Authorize]
         public async Task<CourseResult> UpdateCourseAsync(Guid courseId, CourseTypeInput courseInput, [Service] ITopicEventSender topicEventSender)
         {
             if (courseId == Guid.Empty)
