@@ -1,4 +1,5 @@
-﻿using FirebaseAdmin;
+﻿using AppAny.HotChocolate.FluentValidation;
+using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using FirebaseAdminAuthentication.DependencyInjection.Models;
 using Google.Apis.Auth.OAuth2;
@@ -7,6 +8,7 @@ using GraphQL.API.GraphQL.Queries;
 using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Options;
+using GraphQL.API.Validators;
 using Microsoft.Extensions.Configuration;
 
 namespace GraphQL.API.StartupExtensions
@@ -15,6 +17,8 @@ namespace GraphQL.API.StartupExtensions
     {
         public static IServiceCollection AddGraphQlAPI(this IServiceCollection services, ConfigurationManager configuration)
         {
+            services.AddTransient<CourseTypeInputValidator>();
+
             services.AddGraphQLServer()
                 .AddQueryType<GlobalQuery>()
                 .AddMutationType<GlobalMutation>()
@@ -26,8 +30,11 @@ namespace GraphQL.API.StartupExtensions
                 .AddSorting()
                 .AddProjections()
                 .AddAuthorization()
+                .AddFluentValidation(o =>
+                {
+                    o.UseDefaultErrorMapper();
+                })
                 .AddInMemorySubscriptions(); // you can use Redis for distributed environments https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/subscriptions#redis-provider https://chillicream.com/docs/hotchocolate/v13/distributed-schema/schema-federations
-
 
             ConfigureAuthorization(services, configuration);
             ConfigureAthorization(services, configuration);
@@ -39,8 +46,8 @@ namespace GraphQL.API.StartupExtensions
         {
             //services.AddAuthentication().AddJwtBearer(  // for asp.net core jwt bearer token
 
-            services.AddSingleton(FirebaseApp.Create());
             services.AddFirebaseAuthentication();
+            services.AddSingleton(FirebaseApp.Create());
         }
 
         public static void ConfigureAthorization(this IServiceCollection services, ConfigurationManager configuration)
