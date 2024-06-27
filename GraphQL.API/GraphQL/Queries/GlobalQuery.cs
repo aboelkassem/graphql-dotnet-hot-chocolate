@@ -3,58 +3,46 @@ using GraphQL.API.GraphQL.Filters;
 using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.GraphQL.Sorter;
 using GraphQL.API.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GraphQL.API.GraphQL.Queries
 {
-    public class GlobalQuery(ICoursesRepository _coursesRepo)
+    public class GlobalQuery()
     {
-        // the ordering is important
-
         [UseDbContext(typeof(ApplicationDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering(Type = typeof(CourseFilterType))]
-        [UseSorting(Type = typeof(CourseSortType))]
-        public IQueryable<CourseType> GetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
+        public async Task<IEnumerable<ISearchResultType>> Search(string term, [Service(ServiceKind.Resolver)] ApplicationDbContext context)
         {
-            return context.Courses.Select(c => new CourseType
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Subject = c.Subject,
-                InstructorId = c.InstructorId
-            });
-        }
+            IEnumerable<CourseType> courses = await context.Courses
+                .Where(c => c.Name.Contains(term))
+                .Select(c => new CourseType()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Subject = c.Subject,
+                    InstructorId = c.InstructorId,
+                    CreatorId = c.CreatorId
+                })
+                .ToListAsync();
 
-        [UseDbContext(typeof(ApplicationDbContext))]
-        [UseOffsetPaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering(Type = typeof(CourseFilterType))]
-        [UseSorting(Type = typeof(CourseSortType))]
-        public IQueryable<CourseType> GetOffsetCourses([Service(ServiceKind.Resolver)] ApplicationDbContext context)
-        {
-            return context.Courses.Select(c => new CourseType
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Subject = c.Subject,
-                InstructorId = c.InstructorId
-            });
-        }
+            IEnumerable<InstructorType> instructors = await context.Instructors
+                .Where(i => i.FirstName.Contains(term) || i.LastName.Contains(term))
+                .Select(i => new InstructorType
+                {
+                    Person = new()
+                    {
+                        Id = i.Id,
+                        FirstName = i.FirstName,
+                        LastName = i.LastName
+                    },
+                    Salary = i.Salary
+                })
+                .ToListAsync();
 
-        public async Task<CourseType> GetCourseByIdAsync(Guid id)
-        {
-            var coursesDTO = await _coursesRepo.GetByIdAsync(id);
-            if (coursesDTO is null)
-                throw new GraphQLException(new Error("Course not found", "COURSE_NOT_FOUND"));
-
-            return new CourseType
-            {
-                Id = coursesDTO.Id,
-                Name = coursesDTO.Name,
-                Subject = coursesDTO.Subject,
-                InstructorId = coursesDTO.InstructorId
-            };
+            // by using union will return combination of courseType and InstructorType
+            return new List<ISearchResultType>()
+                .Concat(courses)
+                .Concat(instructors);
         }
 
         // will show warning in playground

@@ -1,9 +1,9 @@
 ﻿namespace GraphQL.API.GraphQL.Queries.Types
 {
     public record PersonType
-    (
-        Guid Id,
-        string FirstName,
-        string LastName
-    );
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    };
 }

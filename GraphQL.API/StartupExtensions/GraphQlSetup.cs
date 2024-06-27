@@ -4,6 +4,7 @@ using FirebaseAdminAuthentication.DependencyInjection.Models;
 using Google.Apis.Auth.OAuth2;
 using GraphQL.API.GraphQL.Mutations;
 using GraphQL.API.GraphQL.Queries;
+using GraphQL.API.GraphQL.Queries.Types;
 using GraphQL.API.GraphQL.Subscriptions;
 using GraphQL.API.Options;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,9 @@ namespace GraphQL.API.StartupExtensions
                 .AddQueryType<GlobalQuery>()
                 .AddMutationType<GlobalMutation>()
                 .AddSubscriptionType<GlobalSubscription>()
+                .AddType<CourseType>()
+                .AddType<InstructorType>()
+                .AddTypeExtension<CourseQuery>()
                 .AddFiltering()
                 .AddSorting()
                 .AddProjections()
